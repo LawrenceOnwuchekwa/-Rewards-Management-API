@@ -1,7 +1,9 @@
 package com.masterhills.RewardsManagement.model;
 
+import com.masterhills.RewardsManagement.utility.UUIDGenerator;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -11,57 +13,50 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int transaction_id;
+    private Long transaction_id;
 
-    @Column(name = "uuid")
-    private UUID transaction_uuid;
+    @Column(name = "uuid", unique = true, length = 36, nullable = false)
+    private String uuid;
 
-    @Column(name = "transaction_date")
-    private Date transaction_date;
+    @Column(name = "transaction_date",nullable = false, updatable = false)
+    private LocalDateTime transaction_date;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "description")
-    private String transaction_description;
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Transaction() {
+        this.uuid = UUIDGenerator.generateUUID().toString();
+        this.transaction_date = LocalDateTime.now();
     }
 
-    public Transaction(int transaction_id, UUID transaction_uuid, Date transaction_date, double amount, String transaction_description, Customer customer) {
+    public Transaction(Long transaction_id, String transaction_uuid, LocalDateTime transaction_date, double amount, String transaction_description, Customer customer) {
         this.transaction_id = transaction_id;
-        this.transaction_uuid = transaction_uuid;
+        this.uuid = uuid;
         this.transaction_date = transaction_date;
         this.amount = amount;
-        this.transaction_description = transaction_description;
+        this.description = description;
         this.customer = customer;
     }
 
-    public int getTransaction_id() {
+    public Long getTransaction_id() {
         return transaction_id;
     }
 
-    public void setTransaction_id(int transaction_id) {
+    public void setTransaction_id(Long transaction_id) {
         this.transaction_id = transaction_id;
     }
 
-    public UUID getTransaction_uuid() {
-        return transaction_uuid;
-    }
-
-    public void setTransaction_uuid(UUID transaction_uuid) {
-        this.transaction_uuid = transaction_uuid;
-    }
-
-    public Date getTransaction_date() {
+    public LocalDateTime getTransaction_date() {
         return transaction_date;
     }
 
-    public void setTransaction_date(Date transaction_date) {
+    public void setTransaction_date(LocalDateTime transaction_date) {
         this.transaction_date = transaction_date;
     }
 
@@ -73,12 +68,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getTransaction_description() {
-        return transaction_description;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTransaction_description(String transaction_description) {
-        this.transaction_description = transaction_description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Customer getCustomer() {
@@ -87,5 +82,13 @@ public class Transaction {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

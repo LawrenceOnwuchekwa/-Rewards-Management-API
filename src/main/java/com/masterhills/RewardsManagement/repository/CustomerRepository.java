@@ -1,0 +1,11 @@
+package com.masterhills.RewardsManagement.repository;
+
+import com.masterhills.RewardsManagement.model.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface CustomerRepository extends JpaRepository<Customer,Long> {
+
+    Optional<Customer> findByUuid(String uuid);
+}

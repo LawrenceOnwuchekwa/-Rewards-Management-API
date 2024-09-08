@@ -1,7 +1,9 @@
 package com.masterhills.RewardsManagement.model;
 
+import com.masterhills.RewardsManagement.utility.UUIDGenerator;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -11,16 +13,11 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customer_id;
+    private Long customer_id;
 
-    @Column(name = "uuid")
-    private UUID uuid;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
-    private String password;
+    // Store UUID as a String with VARCHAR(36)
+    @Column(name = "uuid", unique = true, nullable = false, length = 36)
+    private String uuid;
 
     @Column(name = "total_cashback")
     private double total_cashback;
@@ -28,50 +25,42 @@ public class Customer {
     @Column(name = "current_balance")
     private double current_balance;
 
+    @OneToOne
+    private Credentials credential;
+
+    @OneToMany
+    private List<Transaction> transactionList;
+
 
     public Customer() {
+        this.uuid = UUIDGenerator.generateUUID().toString();
     }
 
-    public Customer(int customer_id, UUID uuid, String email, String password, double total_cashback, double current_balance) {
+    public Customer(Long customer_id, String uuid, double total_cashback, double current_balance, Credentials credential, List<Transaction> transactionList) {
         this.customer_id = customer_id;
         this.uuid = uuid;
-        this.email = email;
-        this.password = password;
         this.total_cashback = total_cashback;
         this.current_balance = current_balance;
+        this.credential = credential;
+        this.transactionList = transactionList;
     }
 
-    public int getCustomer_id() {
+    public Long getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public void setCustomer_id(Long customer_id) {
         this.customer_id = customer_id;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public double getTotal_cashback() {
         return total_cashback;
@@ -88,4 +77,21 @@ public class Customer {
     public void setCurrent_balance(double current_balance) {
         this.current_balance = current_balance;
     }
+
+    public Credentials getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Credentials credential) {
+        this.credential = credential;
+    }
+
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
+    public void setTransactionList(List<Transaction> transactionList) {
+        this.transactionList = transactionList;
+    }
 }
+
