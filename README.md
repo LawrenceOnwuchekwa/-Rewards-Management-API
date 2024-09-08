@@ -31,7 +31,7 @@ The Rewards Management API is a RESTful service designed to manage user authenti
 1. **Clone the Repository:**
 
     ```sh
-    git clone https://github.com/LawrenceOnwuchekwa/rewards-management-api.git
+    git clone https://github.com/LawrenceOnwuchekwa/-Rewards-Management-API.git
     cd rewards-management-api
     ```
 
